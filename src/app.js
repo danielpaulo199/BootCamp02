@@ -18,6 +18,4 @@ class App {
   }
 }
 
-//  push test
-
 export default new App().server;
