@@ -125,8 +125,9 @@ Controllers:
     Fazer: Importam o model que sera usado (ex:users) e cria uma classe como se
         fose uma rota recebendo (req, res).
 
-    Metodos: async store(req, res)
-             async create
+    Metodos: async store(req, res) 'guardar no banco'
+             async create() 'criação'
+             async index()'listagem de todos'
 
     Export: new CLASSE_DO_CONTROLER()
 
