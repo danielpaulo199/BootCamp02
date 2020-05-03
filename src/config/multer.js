@@ -1,11 +1,10 @@
 import multer from 'multer';
 import { extname, resolve } from 'path';
 import crypto from 'crypto';
-import { promisify } from 'util';
 
 export default {
   storage: multer.diskStorage({
-    destination: resolve(__dirname, '..', '..', 'uploads'),
+    destination: resolve(__dirname, '..', '..', 'tmp', 'uploads'),
     filename: (req, file, cb) => {
       return cb(
         null,

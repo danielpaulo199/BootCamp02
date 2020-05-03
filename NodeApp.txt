@@ -1,0 +1,170 @@
+App:
+    classe: construtor iria iniciar o server e os métodos.
+    métodos: server, routes, middlewares.
+    export: new app().server.
+
+    Install:
+        yarn add: express, nodemon, sucrase, eslint, prettier,
+        eslint-config-prettier, eslint-plugin-prettier,
+
+    Config:
+        Rodar eslint --init, criar arquivos .eslintrc e .prettierrc e criar
+        .editorconfig e mudar 2 ultimos para true.
+
+    .eslintrc:{
+                module.exports = {
+            env: {
+                es6: true,
+                node: true,
+            },
+            extends: ['airbnb-base', 'prettier'],
+            plugins: ['prettier'],
+            globals: {
+                Atomics: 'readonly',
+                SharedArrayBuffer: 'readonly',
+            },
+            parserOptions: {
+                ecmaVersion: 2018,
+                sourceType: 'module',
+            },
+            rules: {
+                'prettier/prettier': 'error',
+                'class-methods-use-this': 'off',
+                'no-param-reassign': 'off',
+                camelcase: 'off',
+                'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
+            },
+        };
+    }
+
+    .prettierrc: {
+        "singleQuote": true,
+        "trailingComma": "es5"
+    }
+
+Server:
+    importa app.
+    listen em uma porta.
+
+Routes:
+    importa Router do express.
+    normaliza as rotas.
+    export: routes.
+
+Database:
+    Uso sequelize
+
+    sequelize:
+        Install:
+            yarn add sequelize sequelize-cli
+
+        Config:
+            Criar arquivo .sequelizerc que utiliza a sintaze sem sucrase e tambem
+            no Config/database.js
+
+            .sequelizerc {
+                const { resolve } = require('path');
+
+                module.exports = {
+                    config: resolve(__dirname, 'src', 'config', 'database.js'),
+                    'models-path': resolve(__dirname, 'src', 'app', 'models'),
+                    'migrations-path': resolve(__dirname, 'src', 'database', 'migrations'),
+                    'seeders-path': resolve(__dirname, 'src', 'database', 'seeds'),
+                };
+            }
+
+            Config/database.js:{
+                module.exports = {
+                    dialect: 'postgres',
+                    host: 'localhost',
+                    username: 'USERNAME',
+                    password: 'PASSWORD',
+                    database: 'DATABASE_NAME',
+                    difene: {
+                        timestamps: true,
+                        underscored: true,
+                        underscoredAll: true,
+                    },
+                    };
+            }
+
+        Conexão: Iniciara junto todos os models da aplicação.
+            No index do banco importara sequelize que realiza a conexão (new Sequelize(configs)),
+            e asconfigs do banco. Cria uma classe do banco que sera intanciada
+            para realizar uma nova conexão no export, chamar ./database/index name
+            raiz da aplicação.
+
+                Métodos: Construtor() = chama o init()
+                         Init() = realiza conexão
+
+        Migrations:
+            Criar Micração: yarn sequelize migration:create --name=NOME_MIGRAÇÃO
+            Executar Migração: yarn sequelize db:migrate
+            Desfazer Migração: yarn sequelize db:migrate:undo  // ou db:migrate:undo:all
+
+        Seeds:
+            Criar Seeds: yarn sequelize seed:generate --name SEED_NAME
+            Executar Seeds: yarn sequelize db:seed:all
+
+Models:
+    O que é: Especifica os campos da base de dados que podem ser mudados, como
+    por exemplo user pode acessar "nome, email, senha".
+        Models devem ser iniciados no index da Database!
+
+    Fazer: importa Sequelize, { Model } do sequelize, cria uma classe que extende
+        o Model e contem um metodo estatico init(sequelize), assim se chama
+        super.init() que recebe como parametro as colunas do banco de dados e
+        segundo parametro um novo objeto com sequelize (tambem pode se trocar
+        nome da tabela e outros parametros).
+
+    Exporta: A classe criada sem new pois não tem construtor;
+
+Controllers:
+        Controllers são o que executam as ações quendo uma rota é chamada.
+
+    Fazer: Importam o model que sera usado (ex:users) e cria uma classe como se
+        fose uma rota recebendo (req, res).
+
+    Metodos: async store(req, res)
+             async create
+
+    Export: new CLASSE_DO_CONTROLER()
+
+
+Autenticação:
+    Install: yarn add jsonwebtoken
+
+    Criação: No controller de sessão importa jwt, e após a validação de email e
+    senha retornar um objeto com token: jwt.sign(params infos na config/auth).
+
+    Uso: O token sera enviado por header para as rotas que necessitam de Autenticação
+    como Barer Token
+
+    middleware de auth: Deve pegar o token dos header e fazer a verificação dele
+    por meio do método verify do jwt, usando promisify pois verify nao é async,
+        Deve ser desestruturado tbm o token pois vem 2 strings.
+
+Middlewares:
+    É criado e depois chamado com 'routes.use(MIDDLEWARE)' assim as rotas abaixo
+    irão utilizar esse middleware.
+
+    Criação: export dafault (req, res, next) => {CODIGO}, sempre retonando next
+    para dar continuação
+
+Validação dos Dados:
+    Faz a validação dos dados passados para o req.body com o Yup, direto no
+    começo controller
+
+    install: yarn add Yup
+
+    import: import * as YUP from 'yup';
+
+    fazer: No inico do controller faz um schema = yup.object().shape({PARAMETROS})
+    para validar se as informações passadas no req.body podem ser inseridas
+
+Upload de Arquivos:
+  install: yarn add multer
+  Fazer: Tera um arquivo de config que ira exportar um objeto com Storage que contém
+    Destination e Filename, para especificar para onde os arquivos upados irão.
+    Nas rotas tera uma constante upload = multer(MULTER_CONFIG) que sera utilizado
+    para fazer os middlewares nas rotas como o upload.single() 'um arquivo'.
