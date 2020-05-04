@@ -169,3 +169,40 @@ Upload de Arquivos:
     Destination e Filename, para especificar para onde os arquivos upados irão.
     Nas rotas tera uma constante upload = multer(MULTER_CONFIG) que sera utilizado
     para fazer os middlewares nas rotas como o upload.single() 'um arquivo'.
+{
+  {
+    "editor.mouseWheelZoom": true,
+    "workbench.colorTheme": "Material Theme Palenight High Contrast",
+    "workbench.iconTheme": "material-icon-theme",
+    "window.zoomLevel": 1,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "workbench.startupEditor": "newUntitledFile",
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true,
+    "editor.fontWeight": "400",
+    "editor.fontSize": 14,
+    "editor.rulers": [
+        80,
+        120
+    ],
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    },
+    "emmet.syntaxProfiles": {
+        "javascript": "jsx"
+    },
+    "javascript.updateImportsOnFileMove.enabled": "never",
+    "breadcrumbs.enabled": true,
+    "editor.formatOnSave": true,
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.tabSize": 2
+}
+}
