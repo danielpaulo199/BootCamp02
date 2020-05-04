@@ -14,14 +14,14 @@ module.exports = {
       },
       user_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'Files', key: 'id' },
+        references: { model: 'Users', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
         allowNull: true,
       },
       provider_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'Files', key: 'id' },
+        references: { model: 'Users', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
         allowNull: true,
@@ -44,6 +44,6 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable('Appointments ');
+    return queryInterface.dropTable('Appointments');
   },
 };
