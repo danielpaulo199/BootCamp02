@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize';
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 import databaseConfig from '../config/database';
 
 import User from '../app/models/User'; // importar models
