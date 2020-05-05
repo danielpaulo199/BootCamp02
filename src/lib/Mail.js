@@ -1,4 +1,7 @@
+import { resolve } from 'path';
 import nodemailer from 'nodemailer';
+import exphbs from 'express-handlebars';
+import nodemailerhbs from 'nodemailer-express-handlebars';
 import mailConfig from '../config/mail';
 
 class Mail {
@@ -11,6 +14,47 @@ class Mail {
       secure,
       auth: auth.user ? auth : null,
     });
+
+    this.configureTeamplates();
+  }
+
+  configureTeamplates() {
+    const viewPath = resolve(
+      __dirname,
+      '..',
+      'app',
+      'views',
+      'emails',
+      'partials'
+    );
+
+    this.transporter.use(
+      'compile',
+      nodemailerhbs({
+        viewEngine: exphbs.create({
+          layoutsDir: resolve(
+            __dirname,
+            '..',
+            'app',
+            'views',
+            'emails',
+            'layouts'
+          ),
+          partialsDir: resolve(
+            __dirname,
+            '..',
+            'app',
+            'views',
+            'emails',
+            'partials'
+          ),
+          defaultLayout: 'default',
+          extname: '.hbs',
+        }),
+        viewPath,
+        extName: '.hbs',
+      })
+    );
   }
 
   sendMail(message) {
